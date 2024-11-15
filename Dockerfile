@@ -34,4 +34,4 @@ DISABLE_START_MESSAGE=false\n\
 PERSONAL_MESSAGE=null" > /root/LyFE/config.env
 
 # Start the application with PM2 (without --attach)
-CMD ["pm2", "start", ".", "--name", "botName", "--time"]
+CMD ["pm2", "start"]
