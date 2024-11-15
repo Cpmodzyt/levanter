@@ -9,6 +9,9 @@ WORKDIR /root/LyFE/
 # Install dependencies
 RUN yarn install
 
+# Install PM2 globally
+RUN yarn global add pm2
+
 # Save environment variables to config.env
 RUN echo "SESSION_ID=levanter_15a370df18805c45fcbf7e1fe672dfac85\n\
 PREFIX=.\n\
@@ -30,5 +33,5 @@ AJOIN=true\n\
 DISABLE_START_MESSAGE=false\n\
 PERSONAL_MESSAGE=null" > /root/LyFE/config.env
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application with PM2
+CMD ["pm2", "start", ".", "--name", "botName", "--attach", "--time"]
