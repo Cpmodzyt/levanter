@@ -43,5 +43,5 @@ PERSONAL_MESSAGE = null" > /levanter/config.env
 # Set the default working directory
 WORKDIR /levanter
 
-# Set a default command (optional)
-CMD ["bash"]
+# Start the bot using PM2
+CMD ["pm2", "start", ".", "--name", "botName", "--attach", "--time"]
