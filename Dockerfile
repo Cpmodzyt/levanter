@@ -1,23 +1,47 @@
-# Use the official Node.js image as a base
-FROM node:20.18.0
+# Use an official Ubuntu base image
+FROM ubuntu:latest
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# Set the environment to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Clone the GitHub repository
-RUN git clone https://github.com/cpmodzyt/levanter.git .
+# Install necessary packages, Node.js, Yarn, PM2, and clone the repository
+RUN apt -y update && \
+    apt -y upgrade && \
+    apt -y install git ffmpeg curl && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh && \
+    bash nodesource_setup.sh && \
+    apt-get install -y nodejs && \
+    npm install -g yarn && \
+    yarn global add pm2 && \
+    git clone https://github.com/cpmodzyt/levanter && \
+    cd levanter && \
+    yarn install && \
+    apt -y clean && \
+    rm -rf /var/lib/apt/lists/* nodesource_setup.sh
 
-# Specify the platform as VPS
-ENV PLATFORM VPS
+# Create the config.env file with the specified environment variables
+RUN echo "SESSION_ID = levanter_15f6e32e713a034b338d93ed4b5c54c2d4\n\
+PREFIX = .\n\
+STICKER_PACKNAME = Interworld\n\
+ALWAYS_ONLINE = false\n\
+RMBG_KEY = null\n\
+LANGUAG = en\n\
+WARN_LIMIT = 3\n\
+FORCE_LOGOUT = false\n\
+BRAINSHOP = 159501,6pq8dPiYt7PdqHz3\n\
+MAX_UPLOAD = 200\n\
+REJECT_CALL = false\n\
+SUDO = 94773789258\n\
+TZ = Asia/colombo\n\
+VPS = true\n\
+AUTO_STATUS_VIEW = true\n\
+SEND_READ = true\n\
+AJOIN = true\n\
+DISABLE_START_MESSAGE = false\n\
+PERSONAL_MESSAGE = null" > /levanter/config.env
 
-# Copy package.json and yarn.lock from the repository
-COPY package*.json yarn.lock ./
+# Set the default working directory
+WORKDIR /levanter
 
-# Install dependencies using Yarn
-RUN yarn install
-
-# Expose the port your app listens on (optional)
-EXPOSE 3000
-
-# Command to start the application
-CMD ["npm", "start"]
+# Set a default command (optional)
+CMD ["bash"]
