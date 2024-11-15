@@ -1,5 +1,3 @@
-# Use an official Ubuntu base image
-FROM ubuntu:latest
 
 # Set the environment to avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
