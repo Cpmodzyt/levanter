@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # Clone the GitHub repository
 RUN git clone https://github.com/cpmodzyt/levanter.git .
 
+# Specify the platform as VPS
+ENV PLATFORM VPS
+
 # Copy package.json and yarn.lock from the repository
 COPY package*.json yarn.lock ./
 
